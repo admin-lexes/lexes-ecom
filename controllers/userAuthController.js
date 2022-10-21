@@ -1,6 +1,7 @@
 import UserRagistrationModel from '../models/userRagistrationModel.js';
 import bcrypt from 'bcrypt';
 import userSessionModel from '../models/userSessionModel.js';
+import jwt from 'jsonwebtoken'
 class Authentication{
     static userRagistration = async (req,res)=>{
         try {
@@ -35,16 +36,23 @@ class Authentication{
     }
 
     static userLogin = async(req,res)=>{
+
         try {
-            const {email, password} = req.body;
-            if (email && password) {
+            const {email, password, repassword} = req.body;
+            
+            if (email && password && repassword) {
+                // console.log("email && password",email , password)
                 const user = await UserRagistrationModel.findOne({email:email});
                 // console.log("user",user)
                 if (user != null) {
-
-                    const isCheck = bcrypt.compare(password, user.password)
-                    console.log("isCheck",isCheck)
-                    if(user.email == email && isCheck== true){
+                    // console.log("user....",user.password)
+                    // console.log("user.password....",user.password)
+                    const isCheck = await bcrypt.compare(password, user.password)
+                    const isReCheck = await bcrypt.compare(repassword, user.password)
+                    console.log("isReCheck",isReCheck)
+                    if(user.email == email && isCheck== true & isReCheck== true){
+                        // console.log("user._id",user._id)
+                        // console.log("userID",userID)
                         const sessionFlag = userSessionModel.updateMany(
                             {userID: user._id, status:1},
                             {status:0}
@@ -54,8 +62,14 @@ class Authentication{
                             userID:user._id,
                             status:1
                         });
+                        
+                        const token = jwt.sign(
+                            {userID:user._id},
+                            process.env.jwt_key,
+                            {expiresIn:"3d"}
 
-                        const token = jwt
+                        );
+                        res.send({ status: "success", massage: "Login successfully !!", "token": token });
                     }
                     else{
                         res.status(401).send({ status: "Faild", massage: "Email Password Not Matched" });
@@ -67,24 +81,7 @@ class Authentication{
             else{
                 res.status(404).send({ status: "Failed", massage: "All field are Required !!" });
             }
-            
-            // console.log("result",result.email);
-
-            // if(result != null){
-            //     // console.log("result",result);
-            //     if (result.email == email && result.password == password){
-            //         res.status(201).send(result)
-            //     }
-            //     else{
-            //         res.send("Email or Password does not match")
-            //     }
-
-            // }
-            // else{
-            //     res.send("Email does not resister")
-            // }
-
-            
+                       
             
         } catch (error) {
             console.log(error);

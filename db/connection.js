@@ -4,7 +4,7 @@ const connectDB = async (DATABASE_URL)=>{
     try {
 
         const DB_OPTION = {
-            dbName : 'myshop',
+            dbName : 'lexescart',
         }
         await mongoose.connect(DATABASE_URL, DB_OPTION);
         console.log("Connection Successfully..");

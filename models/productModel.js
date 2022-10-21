@@ -15,8 +15,12 @@ const productSchema = new mongoose.Schema(
         size:{type:String, required:true, trim:true},
         description:{type:String, required:true, trim:true},
         thumbnail: { data: Buffer, contentType: String },
-        updated: { type: Date, default: Date.now() }
+        CreatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
+        UpdatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
 
+    },
+    {
+        timestamps:true
     }
 )
 

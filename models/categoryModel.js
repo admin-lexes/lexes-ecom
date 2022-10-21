@@ -9,6 +9,9 @@ const catagorySchema = new mongoose.Schema(
         type:mongoose.Types.ObjectId,
         ref: "CategoryProduct"
     },
+    CreatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
+    UpdatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
+
 },
 {
     timestamps:true
