@@ -6,7 +6,8 @@ import Authentication from '../controllers/userAuthController.js'
 
 
 // category of products API
-router.post('/createCategoryProduct', CategoryController.cat1),
+router.get('/getCategories', CategoryController.getAllCategory)
+router.post('/createCategory', CategoryController.createCategory),
 router.get('/getCategoryProduct/select', CategoryController.selectCategory)
 
 // product API
@@ -14,7 +15,7 @@ router.post('/create/product', ProductController.createProduct)
 
 // authentication API
 
-router.post('/user/ragistration', Authentication.userRagistration)
+router.post('/user/ragistration', Authentication.userRegistration)
 router.post('/user/login', Authentication.userLogin)
 
 
