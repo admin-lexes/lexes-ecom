@@ -84,6 +84,7 @@ class CategoryController {
 
         } catch (err) {
             console.log(err);
+            res.status(404).json({message:"somthing went wrong",error:err});
         }
 
     }
