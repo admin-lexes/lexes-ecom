@@ -62,8 +62,8 @@ class CategoryController {
             } else {
                 res.status(404).json({ message: "please provide right data catName , type  ,refrenceId" });
             }
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+           res.status(404).json({message:"somthing went wrong",error:err});
 
         }
     }
