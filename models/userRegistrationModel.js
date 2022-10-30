@@ -1,13 +1,14 @@
 import mongoose from "mongoose"
 
-// Defining UserRagistration Schema
+// Defining UserRegistration Schema
 
-const userRagistrationSchema = new mongoose.Schema(
+const userRegistrationSchema = new mongoose.Schema(
     {
         name:{type:String, required:true, trim:true},
         email:{type:String, required:true, trim:true},
         password:{type:String, required:true, trim:true },
         mobile:{type:String, required:true, trim:true},
+        user_type:{type:String, required:true,trim:true, enum:["Admin","User"], default:"User"},
         createdby:{type:mongoose.Types.ObjectId, ref:"user"},
         updatedby:{type:mongoose.Types.ObjectId, ref:"user"},
     },
@@ -17,7 +18,7 @@ const userRagistrationSchema = new mongoose.Schema(
 )
 
 // Compiling Schema
-const UserRagistrationModel =  mongoose.model('user', userRagistrationSchema)
+const UserRegistrationModel =  mongoose.model('UserDetail', userRegistrationSchema)
 
-export default UserRagistrationModel
+export default UserRegistrationModel
 
