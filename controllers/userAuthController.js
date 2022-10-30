@@ -1,4 +1,4 @@
-import UserRagistrationModel from '../models/userRegistration.js';
+import UserRegistrationModel from '../models/userRegistrationModel.js';
 import bcrypt from 'bcrypt';
 import userSessionModel from '../models/userSession.js';
 import jwt from 'jsonwebtoken'
@@ -6,7 +6,7 @@ class Authentication{
     static userRegistration = async (req,res)=>{
         try {
             const {name, email, password, mobile} = req.body
-            const result = await UserRagistrationModel.find({email:email})
+            const result = await UserRegistrationModel.find({email:email})
             // console.log("req.body", req.body);
             // console.log("result", result);
             console.log("result.length1", result.length);
@@ -18,7 +18,7 @@ class Authentication{
 
             const hashPassword = await bcrypt.hash(password, 12);
 
-            const Doc = new UserRagistrationModel({
+            const Doc = new UserRegistrationModel({
                 name:name,
                 email:email,
                 password:hashPassword,
@@ -42,7 +42,7 @@ class Authentication{
             
             if (email && password && repassword) {
                 // console.log("email && password",email , password)
-                const user = await UserRagistrationModel.findOne({email:email});
+                const user = await UserRegistrationModel.findOne({email:email});
                 // console.log("user",user)
                 if (user != null) {
                     // console.log("user....",user.password)
@@ -51,20 +51,22 @@ class Authentication{
                     const isReCheck = await bcrypt.compare(repassword, user.password)
                     console.log("isReCheck",isReCheck)
                     if(user.email == email && isCheck== true & isReCheck== true){
-                        // console.log("user._id",user._id)
+                        console.log("user._id",user._id)
                         // console.log("userID",userID)
                         const sessionFlag = userSessionModel.updateMany(
                             {userID: user._id, status:1},
                             {status:0}
+                            
                         );
+                        
 
-                        const userSessionObj = await userSessionModel.create({
+                        const userObj = await userSessionModel.create({
                             userID:user._id,
                             status:1
                         });
                         
                         const token = jwt.sign(
-                            {userID:user._id},
+                            {userID:user._id, sessionId: userObj._id, userType:user.user_type},
                             process.env.jwt_key,
                             {expiresIn:"3d"}
 
@@ -85,6 +87,22 @@ class Authentication{
             
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    static userLogout = async (req,res)=>{
+        try {
+            // console.log({ "what is inside": req.sessionId})
+            // console.log({"userid":req.userID})
+            
+            const logout = await userSessionModel.updateMany(
+                {userID:req.userID,status: 1}, {status:0})
+            console.log('logout', logout);
+            res.status(201).send({ status: "success", massage: "logout successfully !!" });
+
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 }
