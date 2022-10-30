@@ -3,11 +3,12 @@ import mongoose from 'mongoose';
 // Defining Scema
 const catagorySchema = new mongoose.Schema(
 {
-    catname:{type:String, required:true, trim:true},
+    cateName:{type:String, required:true, trim:true},
+    slug:{type:String,required:true,unique:true},
     type:{type:Number, required:true, enum:[1,2,3]},
-    referenceID:{
+    Parent_referenceID:{
         type:mongoose.Types.ObjectId,
-        ref: "CategoryProduct"
+        ref: "category"
     },
     CreatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
     UpdatedBy:{type:mongoose.Types.ObjectId, ref:"user"},
@@ -22,6 +23,6 @@ const catagorySchema = new mongoose.Schema(
 
 
 // Model
-const CategoryModel = new mongoose.model("CategoryProduct",catagorySchema)
+const CategoryModel = new mongoose.model("category",catagorySchema)
 
 export default CategoryModel

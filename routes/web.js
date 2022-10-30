@@ -7,7 +7,8 @@ import checkUserAuth from '../middleware/authMiddleware.js'
 
 
 // category of products API
-router.post('/createCategoryProduct', CategoryController.cat1),
+router.get('/getCategories', CategoryController.getAllCategory)
+router.post('/createCategory', CategoryController.createCategory),
 router.get('/getCategoryProduct/select', CategoryController.selectCategory)
 
 // product API

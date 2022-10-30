@@ -1,6 +1,6 @@
 import UserRegistrationModel from '../models/userRegistrationModel.js';
 import bcrypt from 'bcrypt';
-import userSessionModel from '../models/userSessionModel.js';
+import userSessionModel from '../models/userSession.js';
 import jwt from 'jsonwebtoken'
 class Authentication{
     static userRegistration = async (req,res)=>{
