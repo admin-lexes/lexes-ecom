@@ -5,9 +5,9 @@ import mongoose from "mongoose"
 const productSchema = new mongoose.Schema(
     {
         title:{type:String, required:true, trim:true},
-        category1:{type:mongoose.Types.ObjectId, ref: "CategoryProduct"},
-        category2:{type:mongoose.Types.ObjectId, ref: "CategoryProduct"},
-        category3:{type:mongoose.Types.ObjectId, ref: "CategoryProduct"},
+        category1:{type:mongoose.Types.ObjectId, ref: "category"},
+        category2:{type:mongoose.Types.ObjectId, ref: "category"},
+        category3:{type:mongoose.Types.ObjectId, ref: "category"},
         price:{type:mongoose.Types.Decimal128,set:v=>{return new mongoose.Types.Decimal128(v.toFixed(2));},required:true,trim:true},
         mrp:{type:mongoose.Types.Decimal128,set:v=>{return new mongoose.Types.Decimal128(v.toFixed(2));},required:true,trim:true},
         quantity:{type:Number, required:true},
@@ -24,6 +24,6 @@ const productSchema = new mongoose.Schema(
     }
 )
 
-const ProductModel = new mongoose.model("ProductCollection",productSchema)
+const ProductModel = new mongoose.model("product",productSchema)
 
 export default ProductModel

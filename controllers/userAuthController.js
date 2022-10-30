@@ -1,9 +1,9 @@
-import UserRagistrationModel from '../models/userRagistrationModel.js';
+import UserRagistrationModel from '../models/userRegistration.js';
 import bcrypt from 'bcrypt';
-import userSessionModel from '../models/userSessionModel.js';
+import userSessionModel from '../models/userSession.js';
 import jwt from 'jsonwebtoken'
 class Authentication{
-    static userRagistration = async (req,res)=>{
+    static userRegistration = async (req,res)=>{
         try {
             const {name, email, password, mobile} = req.body
             const result = await UserRagistrationModel.find({email:email})
