@@ -51,17 +51,20 @@ class ProductController {
 
         try {
             const { slug } = req.params;
-            const category = await CategoryModel.findOne({ slug: slug }).select('_id');
+            const category = await CategoryModel.findOne({ slug: slug }).select('_id type');
             if (!category) {
                 res.status(400).json(message, "categorey not Found")
             }
-
-           const prodByCate = await ProductModel.find({category1:category._id});
-          if(!prodByCate){
-            res.status(400).json(message, "product listing based on category  not Found")
-          }
-            console.log(prodByCate);
-
+             let catObj = {};
+            if(category.type === 1){
+               catObj.category1=category._id;
+            }else if(category.type === 2){
+                catObj.category2=category._id;
+            }else{
+                catObj.category3=category._id;
+            }
+        //    console.log("category",category);
+        // console.log("CatObj",catObj);
             const defaultLimit = 2;
             const maxLimit = 3;
 
@@ -82,7 +85,7 @@ class ProductController {
                 };
             }
 
-            if (endIndex < prodByCate.length) {
+            if (endIndex) {
                 results.next = {
                     page: page + 1,
                     limit: limit
@@ -90,7 +93,10 @@ class ProductController {
             }
             //products.slice(startIndex,endIndex);  
             //results.result =  prodByCate.find().limit(limit).skip(startIndex).exec();
-            results.result = prodByCate.slice(startIndex,endIndex);
+            results.result = await ProductModel.find(catObj).limit(limit).skip(startIndex).exec();
+            if(!results.result){
+                res.status(400).json(message, "product listing based on category  not Found")
+              }
             res.status(200).json(results);
 
         } catch (error) {
@@ -98,7 +104,6 @@ class ProductController {
             res.status(500).json(message, error.message);
         }
     }
-
 }
 
 export default ProductController

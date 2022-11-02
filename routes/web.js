@@ -15,6 +15,7 @@ router.get('/getCategoryProduct/select', CategoryController.selectCategory)
 // authentication API
 
 router.post('/user/Registration', Authentication.userRegistration)
+router.put("/user/userProfile",checkUserAuth,Authentication.userProfile);
 router.post('/user/login', Authentication.userLogin)
 router.get('/user/logout',checkUserAuth, Authentication.userLogout)
 

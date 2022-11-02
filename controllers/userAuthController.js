@@ -1,5 +1,4 @@
 import UserRegistrationModel from '../models/userRegistration.js';
-import userProfileModel from '../models/userprofile.js';
 import bcrypt from 'bcrypt';
 import userSessionModel from '../models/userSession.js';
 import jwt from 'jsonwebtoken'
@@ -110,24 +109,19 @@ class Authentication{
 
     static userProfile = async(req,res)=>{
         try{
-           const user = await UserRegistrationModel.findById({_id:req.userID});
-           const {name,email,mobile}=user;
+        //    const user = await UserRegistrationModel.findById({_id:req.userID});
+        //    const {name,email,mobile}=user;
            const {lastName,gender,manageAdress,panCardInformation}=req.body;
-           const userProfileRecord = new userProfileModel({
-            personalInformation:{
-                firstName:name,
+           const userProfileRecord = new UserRegistrationModel({
                 lastName,  
-            },
                 gender,
-              emailAdress:email,
-              mobileNo:mobile,
               accountSetting:{
               manageAdress,
               panCardInformation
               }
            });
            if(userProfileRecord){
-              await userProfileRecord.save();
+              await userProfileRecord.updateOne({_id:req.userID});
               res.status(200).json({"profile":userProfileRecord, message:"successfull added profile"})
         }else{
             res.status(204).json({message:"not Edit Please Check"})

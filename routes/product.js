@@ -23,7 +23,7 @@ const upload = multer({ storage: storage });
 router.post('/create/product',authMiddleware,upload.array('productImages'), ProductController.createProduct);
 
 // paginate product
-router.get('/:slug', ProductController.listingProductByCategory);
+router.get('/listing/:slug', ProductController.listingProductByCategory);
 
 
 
