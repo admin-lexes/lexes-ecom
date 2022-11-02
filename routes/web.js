@@ -1,7 +1,6 @@
 import express from 'express';
 const router = express.Router();
 import CategoryController from '../controllers/categoryController.js'
-import ProductController from '../controllers/productControllers.js'
 import Authentication from '../controllers/userAuthController.js'
 import checkUserAuth from '../middleware/authMiddleware.js'
 
@@ -11,8 +10,7 @@ router.get('/getCategories', CategoryController.getAllCategory)
 router.post('/createCategory', CategoryController.createCategory),
 router.get('/getCategoryProduct/select', CategoryController.selectCategory)
 
-// product API
-router.post('/create/product', ProductController.createProduct)
+
 
 // authentication API
 

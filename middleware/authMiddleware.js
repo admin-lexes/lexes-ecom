@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import userSessionModel from "../models/userSessionModel.js";
+import userSessionModel from "../models/userSession.js";
 
 const checkUserAuth = async(req,res, next)=>{
     
