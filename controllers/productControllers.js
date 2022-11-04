@@ -63,7 +63,7 @@ class ProductController {
             }else{
                 catObj.category3=category._id;
             }
-        //    console.log("category",category);
+        // console.log("category",category);
         // console.log("CatObj",catObj);
             const defaultLimit = 2;
             const maxLimit = 3;
@@ -102,6 +102,19 @@ class ProductController {
         } catch (error) {
             console.log(error);
             res.status(500).json(message, error.message);
+        }
+    }
+
+    static  productDetails = async (req,res)=>{
+        try {
+            const {productId}=req.params;
+            const product = await ProductModel.findOne({productId}).populate('category1 category2 category3');
+            if(!productId && !product){
+                res.status(400).json(message,"please provide right productId")  
+            }
+            res.status(200).json(product);
+        } catch (error) {
+            res.status(500).json({error:error.message})
         }
     }
 }

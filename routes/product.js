@@ -25,6 +25,8 @@ router.post('/create/product',authMiddleware,upload.array('productImages'), Prod
 // paginate product
 router.get('/listing/:slug', ProductController.listingProductByCategory);
 
+// Product Details api
+router.get('/product/details/:id',ProductController.productDetails);
 
 
 

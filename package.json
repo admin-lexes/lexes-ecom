@@ -21,6 +21,8 @@
     "slugify": "^1.6.5"
   },
   "devDependencies": {
+    "@types/multer": "^1.4.7",
+    "@types/shortid": "^0.0.29",
     "nodemon": "^2.0.20"
   }
 }
