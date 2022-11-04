@@ -4,11 +4,17 @@ import mongoose from "mongoose"
 
 const userRegistrationSchema = new mongoose.Schema(
     {
-        name:{type:String, required:true, trim:true},
-        email:{type:String, required:true, trim:true},
+        name:{type:String, required:true, trim:true,index:true,unique:true,lowercase:true},
+        lastName:{type:String,trim:true}, 
+        gender:{type:String,trim:true,enum:["Male","Female"]},
+        email:{type:String, required:true, trim:true,unique:true,lowercase:true},
         password:{type:String, required:true, trim:true },
         mobile:{type:String, required:true, trim:true},
         user_type:{type:String, required:true,trim:true, enum:["Admin","User"], default:"User"},
+        accountSetting:{
+            manageAdress:{type:String,trim:true},
+              panCardInformation:{type:String,trim:true}
+            },
         createdby:{type:mongoose.Types.ObjectId, ref:"user"},
         updatedby:{type:mongoose.Types.ObjectId, ref:"user"},
     },
@@ -18,7 +24,7 @@ const userRegistrationSchema = new mongoose.Schema(
 )
 
 // Compiling Schema
-const UserRegistrationModel =  mongoose.model('UserDetail', userRegistrationSchema)
+const UserRegistrationModel =  mongoose.model('user', userRegistrationSchema)
 
 export default UserRegistrationModel
 

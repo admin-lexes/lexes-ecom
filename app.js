@@ -3,6 +3,7 @@ dotenv.config()
 import  express from 'express'
 import connectDB from './db/connection.js'
 import web from './routes/web.js'
+import product from './routes/product.js'
 
 
 
@@ -22,6 +23,7 @@ connectDB(DATABASE_URL);
 
 // Load Routes
  app.use('/api', web);
+ app.use('/api', product);
 
 
 

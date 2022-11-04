@@ -1,4 +1,4 @@
-import UserRegistrationModel from '../models/userRegistrationModel.js';
+import UserRegistrationModel from '../models/userRegistration.js';
 import bcrypt from 'bcrypt';
 import userSessionModel from '../models/userSession.js';
 import jwt from 'jsonwebtoken'
@@ -15,8 +15,8 @@ class Authentication{
                 return  res.status(400).send({ message: "User already exits" });
                 
             }
-
-            const hashPassword = await bcrypt.hash(password, 12);
+            const salt = await bcrypt.genSalt(10);
+            const hashPassword = await bcrypt.hash(password,salt);
 
             const Doc = new UserRegistrationModel({
                 name:name,
@@ -26,12 +26,13 @@ class Authentication{
 
             })
 
-            const Result = await Doc.save();
+            const user= await Doc.save();
             // console.log("Result",Result);
-            res.status(201).send({message:"New User Create"})
+            res.status(201).send({user:user,message:"New User Create"})
             
         } catch (error) {
             console.log(error);
+            res.status(400).json({error:error,message:"somthing Went Wrong Please Check"})
         }
     }
 
@@ -103,6 +104,32 @@ class Authentication{
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+    static userProfile = async(req,res)=>{
+        try{
+        //    const user = await UserRegistrationModel.findById({_id:req.userID});
+        //    const {name,email,mobile}=user;
+           const {lastName,gender,manageAdress,panCardInformation}=req.body;
+           const userProfileRecord = new UserRegistrationModel({
+                lastName,  
+                gender,
+              accountSetting:{
+              manageAdress,
+              panCardInformation
+              }
+           });
+           if(userProfileRecord){
+              await userProfileRecord.updateOne({_id:req.userID});
+              res.status(200).json({"profile":userProfileRecord, message:"successfull added profile"})
+        }else{
+            res.status(204).json({message:"not Edit Please Check"})
+        }
+
+        }
+        catch(error){
+        res.status(500).json({error:error.message})
         }
     }
 }
