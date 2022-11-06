@@ -6,6 +6,7 @@ import Authentication from '../controllers/userAuthController.js'
 import checkUserAuth from '../middleware/authMiddleware.js'
 
 
+
 // category of products API
 router.post('/createCategoryProduct', CategoryController.cat1),
 router.get('/getCategoryProduct/select', CategoryController.selectCategory)
@@ -18,6 +19,10 @@ router.post('/create/product', ProductController.createProduct)
 router.post('/user/Registration', Authentication.userRegistration)
 router.post('/user/login', Authentication.userLogin)
 router.get('/user/logout',checkUserAuth, Authentication.userLogout)
+router.post('/user/otp/Verification', Authentication.otpVerification)
+
+
+
 
 
 export default router
