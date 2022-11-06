@@ -4,13 +4,22 @@ import mongoose from "mongoose"
 
 const userRegistrationSchema = new mongoose.Schema(
     {
-        name:{type:String, required:true, trim:true},
-        email:{type:String, required:true, trim:true},
+        name:{type:String, required:true, trim:true,index:true,unique:true,lowercase:true},
+        lastName:{type:String,trim:true}, 
+        gender:{type:String,trim:true,enum:["Male","Female"]},
+        email:{type:String, required:true, trim:true,unique:true,lowercase:true},
         password:{type:String, required:true, trim:true },
         mobile:{type:String, required:true, trim:true},
         otp:{type:String,trim:true},
         user_type:{type:String, required:true,trim:true, enum:["Admin","User"], default:"User"},
+<<<<<<< HEAD:models/userRegistrationModel.js
         is_verified:{type:Number, status_code:[1,0], default:0},
+=======
+        accountSetting:{
+            manageAdress:{type:String,trim:true},
+              panCardInformation:{type:String,trim:true}
+            },
+>>>>>>> ed3a046fafe64c934fd611960907cff509178674:models/userRegistration.js
         createdby:{type:mongoose.Types.ObjectId, ref:"user"},
         updatedby:{type:mongoose.Types.ObjectId, ref:"user"},
     },

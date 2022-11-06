@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import dotenv from 'dotenv'
 dotenv.config()
 import UserRegistrationModel from "../models/userRegistrationModel.js";
@@ -58,6 +59,43 @@ class Authentication {
           }     
         } else {
           res.status(404).send({ status: "Failed", massage: "OTP Expired"});
+=======
+import UserRegistrationModel from '../models/userRegistration.js';
+import bcrypt from 'bcrypt';
+import userSessionModel from '../models/userSession.js';
+import jwt from 'jsonwebtoken'
+class Authentication{
+    static userRegistration = async (req,res)=>{
+        try {
+            const {name, email, password, mobile} = req.body
+            const result = await UserRegistrationModel.find({email:email})
+            // console.log("req.body", req.body);
+            // console.log("result", result);
+            console.log("result.length1", result.length);
+            if(result.length){
+                console.log("result.length", result)
+                return  res.status(400).send({ message: "User already exits" });
+                
+            }
+            const salt = await bcrypt.genSalt(10);
+            const hashPassword = await bcrypt.hash(password,salt);
+
+            const Doc = new UserRegistrationModel({
+                name:name,
+                email:email,
+                password:hashPassword,
+                mobile:mobile
+
+            })
+
+            const user= await Doc.save();
+            // console.log("Result",Result);
+            res.status(201).send({user:user,message:"New User Create"})
+            
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({error:error,message:"somthing Went Wrong Please Check"})
+>>>>>>> ed3a046fafe64c934fd611960907cff509178674
         }
       } else {
         res.status(404).send({ status: "Failed", massage: "User ID Dos not match"});
@@ -175,7 +213,36 @@ class Authentication {
     } catch (error) {
       console.log(error);
     }
+<<<<<<< HEAD
   };
+=======
+
+    static userProfile = async(req,res)=>{
+        try{
+        //    const user = await UserRegistrationModel.findById({_id:req.userID});
+        //    const {name,email,mobile}=user;
+           const {lastName,gender,manageAdress,panCardInformation}=req.body;
+           const userProfileRecord = new UserRegistrationModel({
+                lastName,  
+                gender,
+              accountSetting:{
+              manageAdress,
+              panCardInformation
+              }
+           });
+           if(userProfileRecord){
+              await userProfileRecord.updateOne({_id:req.userID});
+              res.status(200).json({"profile":userProfileRecord, message:"successfull added profile"})
+        }else{
+            res.status(204).json({message:"not Edit Please Check"})
+        }
+
+        }
+        catch(error){
+        res.status(500).json({error:error.message})
+        }
+    }
+>>>>>>> ed3a046fafe64c934fd611960907cff509178674
 }
 
 export default Authentication;
