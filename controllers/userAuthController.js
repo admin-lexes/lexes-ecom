@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 import dotenv from 'dotenv'
 dotenv.config()
-import UserRegistrationModel from "../models/userRegistrationModel.js";
+import UserRegistrationModel from "../models/userRegistration.js";
 import bcrypt from "bcrypt";
-import userSessionModel from "../models/userSessionModel.js";
+import userSessionModel from "../models/userSession.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 
@@ -37,73 +36,34 @@ class Authentication {
 
   static otpVerification = async (req,res)=>{
     try { 
-        const {otp_user, id } = req.body 
-        if (id != null) {
-          
-          const userotp = await UserRegistrationModel.findById({_id:id}).select('otp')
-        // console.log('otp_user',otp_user);
-        // console.log('id',id); 
-        console.log("userotp",userotp);
-        if (userotp && otp_user == userotp.otp) {    
-          const isverify = await UserRegistrationModel.findOneAndUpdate(
-            {_id:id},{$set:{is_verified:1}});
-          console.log('isverify',isverify.is_verified);
-          if (isverify != null) {
-            res.status(201).send({ status: "Verified", massage: "Email Verification Successed"});
-            const blanckOtp = await UserRegistrationModel.findOneAndUpdate(
-              {_id:id},{$unset:{otp:1}});
-            console.log('blanckOtp',blanckOtp);
-          } 
-          else {
-            res.status(404).send({ status: "Failed", massage: "unauthorized"});
-          }     
-        } else {
-          res.status(404).send({ status: "Failed", massage: "OTP Expired"});
-=======
-import UserRegistrationModel from '../models/userRegistration.js';
-import bcrypt from 'bcrypt';
-import userSessionModel from '../models/userSession.js';
-import jwt from 'jsonwebtoken'
-class Authentication{
-    static userRegistration = async (req,res)=>{
-        try {
-            const {name, email, password, mobile} = req.body
-            const result = await UserRegistrationModel.find({email:email})
-            // console.log("req.body", req.body);
-            // console.log("result", result);
-            console.log("result.length1", result.length);
-            if(result.length){
-                console.log("result.length", result)
-                return  res.status(400).send({ message: "User already exits" });
-                
-            }
-            const salt = await bcrypt.genSalt(10);
-            const hashPassword = await bcrypt.hash(password,salt);
-
-            const Doc = new UserRegistrationModel({
-                name:name,
-                email:email,
-                password:hashPassword,
-                mobile:mobile
-
-            })
-
-            const user= await Doc.save();
-            // console.log("Result",Result);
-            res.status(201).send({user:user,message:"New User Create"})
-            
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({error:error,message:"somthing Went Wrong Please Check"})
->>>>>>> ed3a046fafe64c934fd611960907cff509178674
-        }
+      const {otp_user, id } = req.body 
+      if (id != null) {
+        
+        const userotp = await UserRegistrationModel.findById({_id:id}).select('otp')
+      // console.log('otp_user',otp_user);
+      // console.log('id',id); 
+      console.log("userotp",userotp);
+      if (userotp && otp_user == userotp.otp) {    
+        const isverify = await UserRegistrationModel.findOneAndUpdate(
+          {_id:id},{$set:{is_verified:1}});
+        console.log('isverify',isverify.is_verified);
+        if (isverify != null) {
+          res.status(201).send({ status: "Verified", massage: "Email Verification Successed"});
+          const blanckOtp = await UserRegistrationModel.findOneAndUpdate(
+            {_id:id},{$unset:{otp:1}});
+          console.log('blanckOtp',blanckOtp);
+        } 
+        else {
+          res.status(404).send({ status: "Failed", massage: "unauthorized"});
+        }     
       } else {
-        res.status(404).send({ status: "Failed", massage: "User ID Dos not match"});
-      }  
-    } catch (error) {
-        console.log(error);  
-    }
-  }
+        res.status(404).send({ status: "Failed", massage: "OTP Expired"});
+      }
+      }
+    }catch(error){
+          res.status(500).json({error:error.message});
+        }
+      }
 
   static userRegistration = async (req, res) => {
     try {
@@ -213,9 +173,7 @@ class Authentication{
     } catch (error) {
       console.log(error);
     }
-<<<<<<< HEAD
   };
-=======
 
     static userProfile = async(req,res)=>{
         try{
@@ -242,7 +200,6 @@ class Authentication{
         res.status(500).json({error:error.message})
         }
     }
->>>>>>> ed3a046fafe64c934fd611960907cff509178674
-}
 
+  }
 export default Authentication;
