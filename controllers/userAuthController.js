@@ -39,19 +39,19 @@ class Authentication {
       const {otp_user, id } = req.body 
       if (id != null) {
         
-        const userotp = await UserRegistrationModel.findById({_id:id}).select('otp')
+      const userotp = await UserRegistrationModel.findById({_id:id}).select('otp')
       // console.log('otp_user',otp_user);
       // console.log('id',id); 
-      console.log("userotp",userotp);
+      // console.log("userotp",userotp);
       if (userotp && otp_user == userotp.otp) {    
         const isverify = await UserRegistrationModel.findOneAndUpdate(
           {_id:id},{$set:{is_verified:1}});
-        console.log('isverify',isverify.is_verified);
+        // console.log('isverify',isverify.is_verified);
         if (isverify != null) {
           res.status(201).send({ status: "Verified", massage: "Email Verification Successed"});
           const blanckOtp = await UserRegistrationModel.findOneAndUpdate(
             {_id:id},{$unset:{otp:1}});
-          console.log('blanckOtp',blanckOtp);
+          // console.log('blanckOtp',blanckOtp);
         } 
         else {
           res.status(404).send({ status: "Failed", massage: "unauthorized"});
@@ -84,7 +84,7 @@ class Authentication {
         otp:otp 
       });
 
-    //   call sendEmail function
+    // ****************call sendEmail function
       if (Doc) {
         const Result = await Doc.save();
       // console.log("Result",Result);

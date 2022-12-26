@@ -4,12 +4,15 @@ import  express from 'express'
 import connectDB from './db/connection.js'
 import web from './routes/web.js'
 import product from './routes/product.js'
+import cartRoute from './routes/cartRoute.js'
+import orderRoute from './routes/orderRoute.js'
+
 
 
 
 const app = express();
 
-const port = process.env.PORT 
+const port = process.env.PORT
 
 
 const DATABASE_URL = process.env.DATABASE_URL || "mongodb://localhost:27017";
@@ -22,9 +25,8 @@ connectDB(DATABASE_URL);
  app.use(express.json());
 
 // Load Routes
- app.use('/api', web);
+ app.use('/api', [web,cartRoute,orderRoute]);
  app.use('/api', product);
-
 
 
 app.listen(port, ()=>{

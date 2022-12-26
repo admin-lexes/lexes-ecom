@@ -1,3 +1,0 @@
-npm i slugify
-npm i --save multer          //to upload file 
-npm i --save shortid                //To create a uniqueid for image random genrate

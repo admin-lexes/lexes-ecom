@@ -27,6 +27,4 @@ router.get('/listing/:slug', ProductController.listingProductByCategory);
 
 
 
-
-
 export default router
